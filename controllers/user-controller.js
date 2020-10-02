@@ -4,6 +4,10 @@ const userController = {
     // get all users
     getAllUsers(req, res) {
         User.find({})
+            .populate({
+                path: 'thoughts',
+                select: '-__v'
+            })
             .select('-__v') // excludes the v data info
             .sort({ _id: -1 })
             .then(dbData => res.json(dbData))
@@ -15,15 +19,15 @@ const userController = {
     // get single user by id
     getUserById({ params }, res) {
         User.findOne({ _id: params.id }) // destructured params
-            // .populate({
-            //     path: 'comments',
-            //     select: '-__v'
-            // })
+            .populate({
+                path: 'thoughts',
+                select: '-__v'
+            })
             .select('-__v')
             .then(dbData => {
                 // If no user is found, send 404
                 if (!dbData) {
-                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
                 res.json(dbData);
@@ -47,7 +51,7 @@ const userController = {
                     res.status(404).json({ message: 'No pizza found with this id!' });
                     return;
                 }
-                res.json(dbPizzaData);
+                res.json(dbData);
             })
             .catch(err => res.status(400).json(err));
     },
@@ -56,7 +60,7 @@ const userController = {
         User.findOneAndDelete({ _id: params.id }) // another Mongoose method
             .then(dbData => {
                 if (!dbData) {
-                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
                 res.json(dbData);

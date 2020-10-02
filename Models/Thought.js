@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose'); // import dependencies. Schema constructor and model function
+const { Schema, model, Types } = require('mongoose'); // import dependencies. Schema constructor and model function
 const moment = require('moment');
 
 const ReactionSchema = new Schema(
@@ -20,6 +20,11 @@ const ReactionSchema = new Schema(
             type: Date,
             default: Date.now,
             get: createdAtVal => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
+        }
+    },
+    {
+        toJSON: {
+            getters: true
         }
     }
 )
@@ -43,7 +48,7 @@ const ThoughtSchema = new Schema(
             [{ type: Schema.Types.String, ref: "User", required: true }],
 
         reactions:
-            [reactionSchema],
+            [ReactionSchema],
 
     },
     {
