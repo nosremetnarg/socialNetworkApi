@@ -19,7 +19,9 @@ const thoughtController = {
     },
 
     // post a new Thought
-    createThought({ body }, res) { // destructuring body
+    createThought({ body }, res) {
+        console.log("this is written by " , body)
+        // destructuring body
         Thought.create(body) // create is a Mongoose method
             .then(({ _id }) => {
                 return User.findOneAndUpdate(

@@ -69,9 +69,9 @@ const userController = {
     }
     ,
     // // put update user friend by id
-    addNewFriendById({ body }, res) { // destructuring body
-        console.log("****ADD FRIEND", body)
-        User.create(body)
+    addNewFriendById({ body, params }, res) { // destructuring body
+        console.log("****ADD FRIEND", body, params)
+        User.findByIdAndUpdate(body)
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
                     { username: body.username },
