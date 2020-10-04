@@ -48,7 +48,7 @@ const userController = {
         User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
             .then(dbData => {
                 if (!dbData) {
-                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
                 res.json(dbData);
@@ -63,10 +63,31 @@ const userController = {
                     res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
-                 res.json(dbData);
+                res.json(dbData);
             })
             .catch(err => res.status(400).json(err));
     }
+    ,
+    // // put update user friend by id
+    addNewFriendById({ body }, res) { // destructuring body
+        console.log("****ADD FRIEND", body)
+        User.create(body)
+            .then(({ _id }) => {
+                return User.findOneAndUpdate(
+                    { username: body.username },
+                    { $push: { friends: _id } },
+                    { new: true })
+            }
+            )
+            .then(dbData => {
+                if (!dbData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+                res.json(dbData);
+            })
+            .catch(err => res.json(err));
+    },
 }
 
 module.exports = userController;
