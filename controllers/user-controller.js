@@ -69,16 +69,14 @@ const userController = {
     }
     ,
     // // put update user friend by id
-    addNewFriendById({ body, params }, res) { // destructuring body
-        console.log("****ADD FRIEND", body, params)
-        User.findByIdAndUpdate(body)
-            .then(({ _id }) => {
-                return User.findOneAndUpdate(
-                    { username: body.username },
-                    { $push: { friends: _id } },
+    addNewFriendById({ params }, res) { // destructuring body
+        // console.log("****ADD FRIEND", body, params.id)
+        User.findOneAndUpdate(
+                    { _id: params.id },
+                    { $push: { friends: params.id } },
                     { new: true })
-            }
-            )
+            
+            
             .then(dbData => {
                 if (!dbData) {
                     res.status(404).json({ message: 'No user found with this id!' });
