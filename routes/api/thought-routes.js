@@ -18,7 +18,11 @@ router
 router
     .route('/:id') //:id means params
     .get(getThoughtById)
-//     .put(updateThought)
-//     .delete(deleteThought);
+    .put(updateThought)
+    .delete(deleteThought);
+
+// router
+//     .route(':id/reactions')
+//     .post(reaction)
 
 module.exports = router;

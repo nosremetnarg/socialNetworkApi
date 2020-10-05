@@ -60,6 +60,30 @@ const thoughtController = {
                 res.status(400).json(err);
             });
     },
+    // delete thought by id
+    deleteThought({ params }, res) {
+        Thought.findOneAndDelete({ _id: params.id }) // another Mongoose method
+            .then(dbData => {
+                if (!dbData) {
+                    res.status(404).json({ message: 'No thought found with this id!' });
+                    return;
+                }
+                res.json(dbData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
+    // PUT update thought by id
+    updateThought({ params, body }, res) {
+        Thought.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+            .then(dbData => {
+                if (!dbData) {
+                    res.status(404).json({ message: 'No thought found with this id!' });
+                    return;
+                }
+                res.json(dbData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
 }
 
 module.exports = thoughtController;
